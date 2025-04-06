@@ -35,8 +35,8 @@ local function getPid()
     pid = handle:read("*a")
     handle:close()
     pid = pid:gsub("%s+", "") -- Remove whitespace
-    
-    if pid and pid ~= "" and pid  ~= "$$" then
+    local flag = not pid:match("$$") or true
+    if pid and pid ~= "" and flag then
       return pid
     end
   end
@@ -47,13 +47,13 @@ local function getPid()
     pid = handle:read("*a")
     handle:close()
     pid = pid:gsub("%s+", "") -- Remove whitespace
-    
-    if pid and pid ~= "" and pid:match("%d+") and not pid:match("PROCESS_ID") then
+    local flag = not pid:match("PROCESS_ID") or true
+    if pid and pid ~= "" and pid:match("%d+") and flag then
       return pid
     end
   end
 
-  if xta then
+  if xta and false then
     pid = tostring(xta:procid())
     if pid and pid ~= "" and pid:match("%d+") then
       return pid
